@@ -34,16 +34,4 @@ Artifact:
     ArtifactProperty:
       RegionId: cn-hangzhou
       Url: 'resources/artifact_resources/docker_compose.tar'
-  Artifact_2:
-    ArtifactType: AcrImage
-    ArtifactName: AcrImage-better-chat-gpt
-    ArtifactProperty:
-      RepoName: ${AcrImageBuilder.AcrImage_1.RepoName}
-      Tag: ${AcrImageBuilder.AcrImage_1.Tag}
-      RepoType: Public
 AcrImageBuilder:
-  AcrImage_1:
-    BuildType: DockerRepo
-    DockerRepoUrl: better-chat-gpt
-    RepoName: better-chat-gpt
-    Tag: latest
