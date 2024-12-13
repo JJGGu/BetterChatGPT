@@ -1,1 +1,9 @@
-{"ServiceType":"private","AllowedRegions":["ap-southeast-1"],"ArtifactSourceType":"DockerCompose","RepoName":"JJGGu/BetterChatGPT","DockerComposeEnvPath":".env.example","RegionId":"cn-hangzhou","CustomParameters":"","DockerComposeYamlPath":"docker-compose.yml"}
+ServiceType: private
+AllowedRegions:
+- ap-southeast-1
+ArtifactSourceType: DockerCompose
+RepoName: JJGGu/BetterChatGPT
+DockerComposeEnvPath: .env.example
+RegionId: cn-hangzhou
+CustomParameters: ''
+DockerComposeYamlPath: docker-compose.yml
