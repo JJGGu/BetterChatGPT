@@ -4,7 +4,13 @@ ServiceBuildRegion: ap-southeast-1
 RepoName: JJGGu/BetterChatGPT
 DockerComposeEnvPath: .env.example
 RegionId: cn-hangzhou
-CustomParameters: ''
+CustomParameters:
+- NoEcho: false
+  Type: String
+  AllowedPattern: ''
+  Label: Test
+  ConstraintDescription: ''
+  Name: Test
 DockerComposeYamlPath: docker-compose.yml
 Owner: JJGGu
 Branch: main
