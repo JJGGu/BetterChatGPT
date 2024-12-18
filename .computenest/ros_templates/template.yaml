@@ -194,6 +194,9 @@ Parameters:
           Fn::Equals:
             - ExistingVPC
             - ${VpcOption}
+  Test:
+    Type: String
+    Label: Test
 Resources:
   # 新建vpc
   EcsVpc:
@@ -267,26 +270,6 @@ Resources:
       InternetMaxBandwidthOut: 5
       IoOptimized: optimized
       MaxAmount: 1
-  
-  WriteConfigCommand:
-    Type: ALIYUN::ECS::RunCommand
-    DependsOn:
-      - RunInstallCommand
-    Properties:
-      InstanceIds:
-        Fn::GetAtt:
-        - InstanceGroup
-        - InstanceIds
-      Type: RunShellScript
-      Sync: true
-      Timeout: 3600
-      CommandContent: |
-          cat > /root/application/.env << "EOF"
-          {{ serviceConfigParam }}
-          EOF
-          systemctl stop BetterChatGPT
-          systemctl start BetterChatGPT
-  
   RunInstallCommand:
     Type: ALIYUN::ECS::RunCommand
     Properties:
@@ -318,7 +301,7 @@ Resources:
             WantedBy=multi-user.target
             EOF
 
-            
+            echo 'Test=${Test}' >> /root/application/.env
             systemctl enable BetterChatGPT
             systemctl start BetterChatGPT
           - RegionId:
@@ -360,3 +343,9 @@ Metadata:
           - VSwitchCidrBlock
         Label:
           default: 可用区配置
+      - Parameters:
+          - Test
+        Label:
+          en: Software Configuration
+          zh-cn: 软件配置
+      

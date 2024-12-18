@@ -10,7 +10,7 @@ Service:
           - Restart
     SupportBackup: true
     ModifyParametersConfig:
-      - TemplateName: 'ECS单机版'
+      - TemplateName: ECS单机版
         Operation:
           - Name: 变更ECS实例规格
             Description: 变更ECS实例规格
@@ -22,43 +22,8 @@ Service:
             Type: Custom
             Parameters:
               - InstancePassword
-    
-    ParameterConfigs:
-      - TemplateName: 'ECS单机版'
-        Parameters:
-          
-          Default.Test:
-            Type: String
-            Default: ''  
-            Description: Test
-            
-            
-            
-            
-            
-          
-        Metadata:
-           ParameterGroups:
-             - Parameters:
-                 - Test
-               
-               DefaultValue: |-
-                  # All options are optional, remove those you do not need
-                  VITE_CUSTOM_API_ENDPOINT=
-                  VITE_DEFAULT_API_ENDPOINT=
-                  VITE_OPENAI_API_KEY=
-                  VITE_DEFAULT_SYSTEM_MESSAGE=     # Remove this line if you want to use the default system message of Better ChatGPT
-                  VITE_GOOGLE_CLIENT_ID=           # for syncing data with google drive
-               Formatter: env
-               Name: Default
-    
   DeployMetadata:
     SupplierDeployMetadata:
-      SupplierTemplateConfigs:
-        - Name: 'ECS单机版'
-          Url: 'ros_templates/template.yaml'
-          AllowedRegions:
-            - ap-southeast-1
       ArtifactRelation:
         ecs_image_BetterChatGPT:
           ArtifactId: ${Artifact.EcsImage.ArtifactId}
