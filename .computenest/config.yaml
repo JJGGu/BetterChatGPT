@@ -1,63 +1,37 @@
 Service:
-  RegionId: cn-hangzhou
+  RegionId: ap-southeast-1
   DeployType: ros
   OperationMetadata:
     StatusOperationConfigs:
-      - TemplateName: 'ECS单机版'
+      - TemplateName: '单机版'
         SupportOperations:
           - Start
           - Stop
           - Restart
     SupportBackup: true
-    ModifyParametersConfig:
-      - TemplateName: ECS单机版
-        Operation:
-          - Name: 变更ECS实例规格
-            Description: 变更ECS实例规格
-            Type: Custom
-            Parameters:
-              - EcsInstanceType
-          - Name: 变更ECS实例密码
-            Description: 变更ECS实例密码
-            Type: Custom
-            Parameters:
-              - InstancePassword
   DeployMetadata:
     SupplierDeployMetadata:
-      ArtifactRelation:
-        ecs_image_BetterChatGPT:
-          ArtifactId: ${Artifact.EcsImage.ArtifactId}
-          ArtifactVersion: draft
+      FileArtifactRelation:
+        '{{ computenest::file::JJGGu_BetterChatGPT-docker-compose }}':
+          ArtifactId: ${Artifact.Artifact_1.ArtifactId}
+          ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion}
     TemplateConfigs:
-      - Name: ECS单机版
+      - Name: 单机版
         Url: 'ros_templates/template.yaml'
         AllowedRegions:
-          - ap-southeast-1
+          - cn-hangzhou
+          - cn-shanghai
+          - cn-beijing
   ServiceType: private
   ServiceInfo:
     Locale: zh-CN
-    ShortDescription: demo
+    ShortDescription: docker compose deploy
     Image: 'resources/icons/service_logo.png'
 Artifact:
-  EcsImage:
-    ArtifactType: EcsImage
-    ArtifactName: ecs_image_BetterChatGPT
-    Description: BetterChatGPT EcsImage
-    SupportRegionIds:
-        - ap-southeast-1
-    ArtifactBuildProperty:
-      CodeRepo:
-        Platform: github
-        Owner: JJGGu
-        RepoName: JJGGu/BetterChatGPT
-        Branch: main
+  Artifact_1:
+    ArtifactType: File
+    ArtifactName: JJGGu_BetterChatGPT-docker-compose
+    ArtifactProperty:
       RegionId: ap-southeast-1
-      CommandType: RunShellScript
-      CommandContent: |-
-        mkdir -p /root/application
-        if [ -e "/root/code/." ]; then cp -r "/root/code/." "/root/application/"; fi
-        cd /root/application
-        cp .env.example ./.env
-        sed -i 's/pull_policy: always/pull_policy: if_not_present/g' docker-compose.yml
-        docker compose -f docker-compose.yml build
-        docker compose -f docker-compose.yml pull || true;
+      Url: 'resources/artifact_resources/docker_compose.tar'
+AcrImageBuilder:

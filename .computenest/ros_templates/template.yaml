@@ -194,9 +194,6 @@ Parameters:
           Fn::Equals:
             - ExistingVPC
             - ${VpcOption}
-  TTTT:
-    Type: String
-    Label: TTTT
 Resources:
   # 新建vpc
   EcsVpc:
@@ -260,7 +257,7 @@ Resources:
         Ref: ZoneId
       SecurityGroupId:
         Ref: SecurityGroup
-      ImageId: ecs_image_BetterChatGPT
+      ImageId: "{{resolve:oos:aliyun/services/computenest/images/aliyun_3_2104_docker_compose_2_27_compute_nest}}"
       Password:
         Ref: InstancePassword
       InstanceType:
@@ -283,6 +280,9 @@ Resources:
       CommandContent:
         Fn::Sub:
           - |
+            wget '{{ computenest::file::JJGGu_BetterChatGPT-docker-compose }}' -O /root/application/docker_compose.tar
+            tar -xvf /root/application/docker_compose.tar -C /root/application
+
             cat > /etc/systemd/system/BetterChatGPT.service <<EOF
             [Unit]
             Description=Docker Compose Application Service
@@ -292,7 +292,7 @@ Resources:
             [Service]
             Type=oneshot
             RemainAfterExit=yes
-            WorkingDirectory=/root/application
+            WorkingDirectory=/root/application/docker_compose
             ExecStart=/usr/bin/docker compose -f docker-compose.yml up -d
             ExecStop=/usr/bin/docker compose down
             TimeoutStartSec=0
@@ -301,8 +301,9 @@ Resources:
             WantedBy=multi-user.target
             EOF
 
-            echo 'TTTT=${TTTT}' >> /root/application/.env
             systemctl enable BetterChatGPT
+
+            
             systemctl start BetterChatGPT
           - RegionId:
               Ref: ALIYUN::Region
@@ -343,9 +344,4 @@ Metadata:
           - VSwitchCidrBlock
         Label:
           default: 可用区配置
-      - Parameters:
-          - TTTT
-        Label:
-          en: Software Configuration
-          zh-cn: 软件配置
       
